@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Congreso de Innovación Académica | Universidad Central</title>
+  <!-- Bootstrap 5 CSS + Icons + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts para tipografía elegante -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      background-color: #fefcf5;
+      scroll-behavior: smooth;
+    }
+
+    /* gradiente personalizado y efectos */
+    .hero-gradient {
+      background: linear-gradient(135deg, #0b2b40 0%, #1a4a5f 50%, #0e3b4a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-gradient::before {
+      content: "";
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 80%;
+      height: 140%;
+      background: radial-gradient(circle, rgba(255,215,130,0.12) 0%, rgba(0,0,0,0) 70%);
+      transform: rotate(15deg);
+      pointer-events: none;
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+      border: none;
+      border-radius: 1.5rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-accent {
+      background-color: #ffb74d;
+      color: #1e2f3a;
+      font-weight: 700;
+      padding: 12px 32px;
+      border-radius: 40px;
+      transition: 0.2s;
+      border: none;
+    }
+
+    .btn-accent:hover {
+      background-color: #ffa01e;
+      transform: scale(1.02);
+      color: #0a2a32;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .btn-outline-light-custom {
+      border: 2px solid rgba(255,255,240,0.7);
+      background: transparent;
+      color: white;
+      border-radius: 40px;
+      padding: 10px 28px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .btn-outline-light-custom:hover {
+      background: rgba(255,255,245,0.2);
+      border-color: white;
+    }
+
+    .section-title {
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0b2b40;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 70px;
+      height: 4px;
+      background: #ffb74d;
+      border-radius: 4px;
+    }
+
+    .text-gold {
+      color: #ffb74d;
+    }
+
+    .bg-soft-accent {
+      background-color: #fff5e6;
+    }
+
+    .counter-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #0b2b40;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #ffb74d !important;
+    }
+
+    /* efecto para el contador de tiempo */
+    #countdown {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .time-box {
+      background: rgba(255,255,245,0.15);
+      backdrop-filter: blur(4px);
+      border-radius: 24px;
+      padding: 0.8rem 1.4rem;
+      min-width: 85px;
+      text-align: center;
+      border: 1px solid rgba(255,215,140,0.4);
+    }
+
+    .time-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 576px) {
+      .time-box {
+        min-width: 65px;
+        padding: 0.5rem 0.8rem;
+      }
+      .time-number {
+        font-size: 1.7rem;
+      }
+      .hero-title {
+        font-size: 2.4rem;
+      }
+    }
+
+    /* navbar transparente mejorado */
+    .navbar {
+      transition: all 0.3s;
+      background-color: rgba(11, 43, 64, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    /* cards ponentes */
+    .speaker-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #ffb74d;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .speaker-img:hover {
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar fijo -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top py-3">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="bi bi-mortarboard-fill me-2 text-gold"></i>U-Congress
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
+        <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#detalles">El evento</a></li>
+        <li class="nav-item"><a class="nav-link" href="#ponentes">Ponentes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#agenda">Agenda</a></li>
+        <li class="nav-item"><a class="nav-link" href="#registro">Registro</a></li>
+      </ul>
+      <a href="#registro" class="btn btn-accent ms-lg-3 px-4">Inscribirse <i class="bi bi-arrow-right-short"></i></a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero / Inicio -->
+<section id="inicio" class="hero-gradient text-white pt-5 pb-5 mt-0" style="padding-top: 120px !important;">
+  <div class="container py-5">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7" data-aos="fade-right">
+        <span class="badge bg-warning text-dark mb-3 py-2 px-3 rounded-pill"><i class="bi bi-calendar-week"></i> 15 - 17 OCTUBRE 2025</span>
+        <h1 class="display-3 fw-bold mb-3 hero-title">Congreso Internacional de <span class="text-gold">Innovación Académica</span></h1>
+        <p class="lead mb-4">Explora el futuro de la educación superior: tecnología, investigación y nuevas metodologías. Conecta con líderes mundiales y transforma tu visión universitaria.</p>
+        <div class="d-flex flex-wrap gap-3 mb-5">
+          <a href="#registro" class="btn btn-accent btn-lg px-5 py-3 fw-semibold">Reservar cupo <i class="bi bi-ticket-perforated"></i></a>
+          <a href="#detalles" class="btn btn-outline-light-custom btn-lg px-4 py-3">Conocer más <i class="bi bi-chevron-down"></i></a>
+        </div>
+        <!-- Contador dinámico -->
+        <div class="mt-4">
+          <p class="mb-2 fw-semibold"><i class="bi bi-hourglass-split me-2"></i> EVENTO COMIENZA EN:</p>
+          <div id="countdown" class="d-flex gap-3">
+            <div class="time-box"><div class="time-number" id="days">00</div><div class="small text-uppercase">Días</div></div>
+            <div class="time-box"><div class="time-number" id="hours">00</div><div class="small text-uppercase">Horas</div></div>
+            <div class="time-box"><div class="time-number" id="minutes">00</div><div class="small text-uppercase">Min</div></div>
+            <div class="time-box"><div class="time-number" id="seconds">00</div><div class="small text-uppercase">Seg</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 text-center">
+        <div class="bg-white rounded-5 p-3 shadow-lg" style="background: rgba(255,255,240,0.1); backdrop-filter: blur(4px);">
+          <img src="https://placehold.co/600x400/f0ede8/2c3e50?text=Auditorio+Principal+UC" alt="Evento preview" class="img-fluid rounded-4 shadow" style="max-height: 320px; width: auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección Detalles del evento -->
+<section id="detalles" class="py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="text-gold fw-semibold">¿Por qué asistir?</span>
+      <h2 class="section-title display-5 fw-bold">Un encuentro académico único</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card card-hover h-100 p-4 text-center bg-white rounded-4">
+          <div class="mb-3"><i class="bi bi-megaphone fs-1 text-gold"></i></div>
+          <h4>+30 ponencias magistrales</h4>
+          <p class="text-muted">Investigadores de 12 países compartirán casos de éxito y avances en educación STEM, humanidades digitales y gestión universitaria.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-hover h-100 p-4 text-center bg-white rounded-4">
+          <div class="mb-3"><i class="bi bi-people fs-1 text-gold"></i></div>
+          <h4>Networking de alto nivel</h4>
+          <p class="text-muted">Conecta con rectores, decanos, investigadores y líderes estudiantiles en espacios diseñados para colaboración.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-hover h-100 p-4 text-center bg-white rounded-4">
+          <div class="mb-3"><i class="bi bi-trophy fs-1 text-gold"></i></div>
+          <h4>Premios a la innovación</h4>
+          <p class="text-muted">Participa en el concurso de proyectos académicos disruptivos con reconocimiento y capital semilla.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Stats simbólicos -->
+    <div class="row mt-5 pt-4 g-4 text-center">
+      <div class="col-6 col-md-3"><div class="counter-number">5k+</div><p class="text-secondary">Asistentes esperados</p></div>
+      <div class="col-6 col-md-3"><div class="counter-number">40+</div><p class="text-secondary">Universidades aliadas</p></div>
+      <div class="col-6 col-md-3"><div class="counter-number">120+</div><p class="text-secondary">Ponencias aceptadas</p></div>
+      <div class="col-6 col-md-3"><div class="counter-number">15</div><p class="text-secondary">Países participantes</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección Ponentes destacados -->
+<section id="ponentes" class="py-5 bg-soft-accent">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="text-gold fw-semibold">Knowledge Leaders</span>
+      <h2 class="section-title display-5 fw-bold">Ponentes internacionales</h2>
+      <p class="text-muted mx-auto mt-3" style="max-width: 680px;">Expertos de talla mundial en pedagogía, transformación digital y políticas educativas.</p>
+    </div>
+    <div class="row g-5">
+      <div class="col-md-6 col-lg-3 text-center">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="speaker-img mb-3" alt="Dra. Laura M.">
+        <h5 class="fw-bold mb-1">Dra. Laura Mendoza</h5>
+        <p class="text-gold fw-semibold">MIT Media Lab</p>
+        <p class="small">"IA en el aula: nuevos paradigmas"</p>
+      </div>
+      <div class="col-md-6 col-lg-3 text-center">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="speaker-img mb-3" alt="Dr. Carlos R.">
+        <h5 class="fw-bold mb-1">Dr. Carlos Ruiz</h5>
+        <p class="text-gold fw-semibold">Universidad de Barcelona</p>
+        <p class="small">Investigación abierta y ciencia ciudadana</p>
+      </div>
+      <div class="col-md-6 col-lg-3 text-center">
+        <img src="https://randomuser.me/api/portraits/women/45.jpg" class="speaker-img mb-3" alt="Prof. Sunita K.">
+        <h5 class="fw-bold mb-1">Prof. Sunita Krishnan</h5>
+        <p class="text-gold fw-semibold">IIT Delhi</p>
+        <p class="small">Aprendizaje adaptativo y gamificación</p>
+      </div>
+      <div class="col-md-6 col-lg-3 text-center">
+        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="speaker-img mb-3" alt="Dr. Javier L.">
+        <h5 class="fw-bold mb-1">Dr. Javier Lozano</h5>
+        <p class="text-gold fw-semibold">Universidad de los Andes</p>
+        <p class="small">Ecosistemas de innovación regional</p>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <a href="#" class="btn btn-outline-secondary rounded-pill px-4" id="verPonentesBtn">Ver todos los ponentes <i class="bi bi-arrow-right-circle"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- Agenda del evento (tabla responsive) -->
+<section id="agenda" class="py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="text-gold fw-semibold">Programación</span>
+      <h2 class="section-title display-5 fw-bold">Agenda académica</h2>
+    </div>
+    <div class="table-responsive shadow rounded-4 bg-white p-2">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-dark text-white">
+          <tr><th>Horario</th><th>Actividad</th><th>Ponente / Responsable</th><th>Auditorio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="fw-bold">09:00 - 10:30</td><td>Ceremonia inaugural + Conferencia magistral: "Universidad 2030"</td><td>Dra. Laura Mendoza (MIT)</td><td>Central</td></tr>
+          <tr><td class="fw-bold">11:00 - 12:30</td><td>Panel: Ética e IA en la educación superior</td><td>Dra. Sunita K., Dr. Carlos Ruiz</td><td>Sala Innovación</td></tr>
+          <tr><td class="fw-bold">14:00 - 15:30</td><td>Taller práctico: Diseño de experiencias de aprendizaje híbrido</td><td>Mtra. Patricia Gómez</td><td>Lab 3</td></tr>
+          <tr><td class="fw-bold">16:00 - 17:30</td><td>Mesa redonda: Internacionalización del currículo</td><td>Vicerrectorados + panel internacional</td><td>Auditorio Mayor</td></tr>
+          <tr><td class="fw-bold">18:00 - 19:30</td><td>Networking Cocktail & Poster Session</td><td>Comité organizador</td><td>Hall Central</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-warning mt-4 d-flex align-items-center gap-3" role="alert">
+      <i class="bi bi-info-circle-fill fs-4"></i>
+      <div>Agenda sujeta a actualizaciones. Los asistentes registrados recibirán la versión interactiva 7 días antes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección de registro + formulario con validación JavaScript + Bootstrap -->
+<section id="registro" class="py-5 bg-soft-accent">
+  <div class="container py-4">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <span class="text-gold fw-semibold">Cupos limitados</span>
+        <h2 class="display-5 fw-bold">Regístrate ahora y asegura tu participación</h2>
+        <p class="lead text-muted">Forma parte de este encuentro transformador. Incluye certificado de asistencia, coffee breaks y acceso a todas las conferencias.</p>
+        <ul class="list-unstyled mt-4">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-gold me-2"></i> Certificación con valor curricular</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-gold me-2"></i> Material digital de ponencias</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-gold me-2"></i> Acceso a zona de networking premium</li>
+          <li><i class="bi bi-check-circle-fill text-gold me-2"></i> Descuento especial para estudiantes y grupos</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border-0 shadow-lg rounded-4 p-4">
+          <div class="card-body">
+            <h4 class="card-title fw-bold mb-3">Formulario de inscripción</h4>
+            <form id="registroForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre completo</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Ej: Ana María Torres" required>
+                <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Correo institucional</label>
+                <input type="email" class="form-control" id="email" placeholder="ana.torres@universidad.edu" required>
+                <div class="invalid-feedback">Correo electrónico válido requerido.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Institución / Universidad</label>
+                <input type="text" class="form-control" id="institucion" placeholder="Universidad Central" required>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Categoría</label>
+                <select class="form-select" id="categoria">
+                  <option value="Estudiante">Estudiante (Pregrado/Posgrado)</option>
+                  <option value="Docente">Docente / Investigador</option>
+                  <option value="Profesional externo">Profesional externo</option>
+                  <option value="Autoridad">Autoridad universitaria</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-accent w-100 py-3 fw-bold">Registrarme <i class="bi bi-send"></i></button>
+              <p class="small text-muted mt-3 text-center">Al registrarte aceptas las políticas de tratamiento de datos.</p>
+            </form>
+            <div id="formMessage" class="mt-3 text-center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white pt-5 pb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 mb-4">
+        <h4 class="fw-bold"><i class="bi bi-mortarboard-fill text-gold me-2"></i>U-Congress</h4>
+        <p>Evento organizado por la Vicerrectoría Académica y la Dirección de Innovación Educativa de la Universidad Central.</p>
+        <div class="d-flex gap-3 fs-5">
+          <a href="#" class="text-white-50"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="text-white-50"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-white-50"><i class="bi bi-linkedin"></i></a>
+          <a href="#" class="text-white-50"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 footer-links">
+        <h5>Enlaces rápidos</h5>
+        <ul class="list-unstyled">
+          <li><a href="#inicio" class="text-white-50 text-decoration-none">Inicio</a></li>
+          <li><a href="#detalles" class="text-white-50 text-decoration-none">Evento</a></li>
+          <li><a href="#ponentes" class="text-white-50 text-decoration-none">Ponentes</a></li>
+          <li><a href="#registro" class="text-white-50 text-decoration-none">Registro</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>Contacto</h5>
+        <address class="text-white-50">
+          <i class="bi bi-geo-alt-fill me-2"></i> Calle 45 # 22-01, Bogotá - Colombia<br>
+          <i class="bi bi-envelope-fill me-2"></i> eventosacademicos@unicentral.edu.co<br>
+          <i class="bi bi-telephone-fill me-2"></i> +57 (601) 555 1234
+        </address>
+      </div>
+    </div>
+    <hr class="bg-secondary">
+    <div class="text-center text-white-50 small">
+      © 2025 Congreso Internacional de Innovación Académica - Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS + Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Contador y formulario con JS nativo -->
+<script>
+  // ---------- COUNTDOWN TIMER ----------
+  function updateCountdown() {
+    const eventDate = new Date("Oct 15, 2025 09:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = eventDate - now;
+
+    if (distance < 0) {
+      document.getElementById("days").innerText = "00";
+      document.getElementById("hours").innerText = "00";
+      document.getElementById("minutes").innerText = "00";
+      document.getElementById("seconds").innerText = "00";
+      return;
+    }
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+    document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+    document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+    document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Smooth scroll para enlaces internos (navbar + botones)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === "#" || targetId === "") return;
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        e.preventDefault();
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // opcional: cerrar navbar colapsado en móvil
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        if (navbarCollapse.classList.contains('show')) {
+          new bootstrap.Collapse(navbarCollapse).toggle();
+        }
+      }
+    });
+  });
+
+  // Formulario de registro con validación y mensaje modal-like
+  const form = document.getElementById('registroForm');
+  const messageDiv = document.getElementById('formMessage');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    let isValid = true;
+    const nombreInput = document.getElementById('nombre');
+    const emailInput = document.getElementById('email');
+    const institucionInput = document.getElementById('institucion');
+
+    // Resetear clases de validación
+    [nombreInput, emailInput, institucionInput].forEach(inp => inp.classList.remove('is-invalid'));
+
+    if (nombreInput.value.trim() === "") {
+      nombreInput.classList.add('is-invalid');
+      isValid = false;
+    }
+    const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+    if (!emailPattern.test(emailInput.value.trim())) {
+      emailInput.classList.add('is-invalid');
+      isValid = false;
+    }
+    if (institucionInput.value.trim() === "") {
+      institucionInput.classList.add('is-invalid');
+      isValid = false;
+    }
+
+    if (isValid) {
+      // Mostrar mensaje de éxito con Bootstrap alert
+      messageDiv.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill"></i> ¡Gracias ${nombreInput.value.split(' ')[0]}! Tu registro ha sido recibido. Pronto recibirás un correo de confirmación.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`;
+      form.reset();
+      // Ocultar mensaje después de 6 segundos (manteniendo estilo)
+      setTimeout(() => {
+        if (messageDiv.firstChild) messageDiv.innerHTML = '';
+      }, 6000);
+    } else {
+      messageDiv.innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i> Por favor completa correctamente los campos obligatorios.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`;
+      setTimeout(() => {
+        if (messageDiv.firstChild && messageDiv.firstChild.classList?.contains('alert-danger')) messageDiv.innerHTML = '';
+      }, 4000);
+    }
+  });
+
+  // Botón "Ver todos los ponentes" (acción demo: alerta pero elegante)
+  document.getElementById('verPonentesBtn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const toastHtml = `<div class="toast-container position-fixed bottom-0 end-0 p-3"><div class="toast show bg-white border-0 shadow-lg" role="alert"><div class="toast-header bg-gold"><strong class="me-auto"><i class="bi bi-star-fill text-gold"></i> Más información</strong><button type="button" class="btn-close" data-bs-dismiss="toast"></button></div><div class="toast-body">Próximamente publicaremos la lista completa con 25 ponentes internacionales. ¡Sigue atento!</div></div></div>`;
+    const container = document.createElement('div');
+    container.innerHTML = toastHtml;
+    document.body.appendChild(container);
+    setTimeout(() => container.remove(), 4500);
+    // Para que funcione el botón cerrar
+    const toastEl = container.querySelector('.toast');
+    if(toastEl) {
+      const bsToast = new bootstrap.Toast(toastEl, { autohide: true, delay: 4000 });
+      bsToast.show();
+    }
+  });
+</script>
+</body>
+</html>
